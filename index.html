@@ -1,57 +1,55 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Signing you in…</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Redirecting…</title>
   <style>
-    /* full-screen flex container */
-    html, body {
-      margin: 0;
-      height: 100%;
+    body {
+      background: #0f172a;
+      color: white;
+      font-family: sans-serif;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
-      background: #f5f5f5;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+      height: 100vh;
+      margin: 0;
     }
-    /* spinner */
+
     .spinner {
-      width: 80px;
-      height: 80px;
-      border: 12px solid #e0e0e0;
-      border-top: 12px solid #4285F4;   /* Google Blue */
+      margin-top: 20px;
+      width: 50px;
+      height: 50px;
+      border: 6px solid #ddd;
+      border-top: 6px solid #3b82f6;
       border-radius: 50%;
       animation: spin 1s linear infinite;
     }
+
     @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    /* message under the loader */
-    .message {
-      position: absolute;
-      top: 60%;
-      text-align: center;
-      color: #555;
-      font-size: 1rem;
+      to {
+        transform: rotate(360deg);
+      }
     }
   </style>
 </head>
 <body>
+  <h1>Redirecting to Waslyy app…</h1>
   <div class="spinner"></div>
-  <div class="message">Signing you in…</div>
 
   <script>
-    (function() {
-      // 1) grab the query string (everything after ?)
-      const qs = window.location.search.substring(1);
-      // 2) build your app's deep-link URL
-      const scheme = 'customersApp://auth-callback';  // <-- your custom scheme + host
-      const deepLink = scheme + (qs ? '?' + qs : '');
-      // 3) after a brief moment so the user sees the spinner, redirect
+    // Wait a moment for page to load
+    window.onload = () => {
+      const query = window.location.search;
+      const deepLink = `customersApp://auth-callback${query}`;
+      window.location.href = deepLink;
+
+      // fallback after 5s if app not installed
       setTimeout(() => {
-        window.location.href = deepLink;
-      }, 800);
-    })();
+        document.body.innerHTML = "<h2>App not detected. Please install Waslyy.</h2>";
+      }, 5000);
+    };
   </script>
 </body>
 </html>
